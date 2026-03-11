@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 import Post from './components/molecules/Post/Post';
 import Practice2 from './components/Practice2';
 import SearchBar from './components/molecules/SearchBar/SearchBar';
-import { postsData } from './data';
+import StudentList from './components/StudentList';
+import StatisticsData from './components/StatisticsData';
+import AboutAuthor from './components/AboutAuthor';
+import { postsData, studentsData } from './data';
 import styles from './App.module.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  
+  // Practical 3 states
+  const [showHelp, setShowHelp] = useState(false);
+  const [activeTab, setActiveTab] = useState('list');
 
   const categories = ['All', 'News', 'Updates'];
 
@@ -25,6 +32,20 @@ function App() {
     <div className={styles.appContainer}>
       <h1 style={{ textAlign: 'center', width: '100%' }}>React: Практичні роботи</h1>
       
+      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+        <button 
+          onClick={() => setShowHelp(!showHelp)}
+          style={{ padding: '10px 20px', cursor: 'pointer', borderRadius: '5px', border: '1px solid #ccc' }}
+        >
+          {showHelp ? "Приховати інструкцію" : "Показати інструкцію"}
+        </button>
+        {showHelp && (
+          <p style={{ marginTop: '10px', color: '#555', fontWeight: 'bold' }}>
+            Довідка: Дозволяє керувати списками студентів.
+          </p>
+        )}
+      </div>
+
       <div className={styles.mainLayout}>
         <div className={styles.feedWrapper}>
           <h2 style={{ textAlign: 'center' }}>Стрічка новин</h2>
@@ -70,6 +91,34 @@ function App() {
         </div>
 
         <div className={styles.practiceWrapper}>
+          <h2>Практична №2 та №3</h2>
+          
+          <div className={styles.tabContainer}>
+            <button 
+              className={`${styles.tabButton} ${activeTab === 'list' ? styles.activeTab : ''}`}
+              onClick={() => setActiveTab('list')}
+            >
+              Студенти
+            </button>
+            <button 
+              className={`${styles.tabButton} ${activeTab === 'stats' ? styles.activeTab : ''}`}
+              onClick={() => setActiveTab('stats')}
+            >
+              Статистика
+            </button>
+            <button 
+              className={`${styles.tabButton} ${activeTab === 'about' ? styles.activeTab : ''}`}
+              onClick={() => setActiveTab('about')}
+            >
+              Про автора
+            </button>
+          </div>
+
+          {activeTab === 'list' && <StudentList students={studentsData} />}
+          {activeTab === 'stats' && <StatisticsData />}
+          {activeTab === 'about' && <AboutAuthor />}
+          
+          <hr style={{ margin: '30px 0' }} />
           <Practice2 />
         </div>
       </div>
@@ -77,4 +126,5 @@ function App() {
   );
 }
 
-export default App;
+export default App;
+
