@@ -5,12 +5,16 @@ import SearchBar from './components/molecules/SearchBar/SearchBar';
 import StudentList from './components/StudentList';
 import StatisticsData from './components/StatisticsData';
 import AboutAuthor from './components/AboutAuthor';
+import AddStudentForm from './components/AddStudentForm';
 import { postsData, studentsData } from './data';
 import styles from './App.module.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  
+  // States for students
+  const [students, setStudents] = useState(studentsData);
   
   // Practical 3 states
   const [showHelp, setShowHelp] = useState(false);
@@ -27,6 +31,10 @@ function App() {
 
     return matchesSearch && matchesCategory;
   });
+
+  const handleAddStudent = (newStudent) => {
+    setStudents([...students, newStudent]);
+  };
 
   return (
     <div className={styles.appContainer}>
@@ -91,7 +99,7 @@ function App() {
         </div>
 
         <div className={styles.practiceWrapper}>
-          <h2>Практична №2 та №3</h2>
+          <h2>Практична №2, №3 та №4</h2>
           
           <div className={styles.tabContainer}>
             <button 
@@ -114,7 +122,14 @@ function App() {
             </button>
           </div>
 
-          {activeTab === 'list' && <StudentList students={studentsData} />}
+          {activeTab === 'list' && (
+            <>
+              <AddStudentForm onAddStudent={handleAddStudent} />
+              <div style={{ marginTop: '30px' }}>
+                <StudentList students={students} />
+              </div>
+            </>
+          )}
           {activeTab === 'stats' && <StatisticsData />}
           {activeTab === 'about' && <AboutAuthor />}
           
@@ -127,4 +142,5 @@ function App() {
 }
 
 export default App;
+
 
